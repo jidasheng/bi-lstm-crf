@@ -52,7 +52,9 @@ class WordsTagger:
             return []
 
         def _tokens(sentence, ts):
-            begins = [(idx, t[2:]) for idx, t in enumerate(ts) if t[0] in begin_tags + "O"] + [(len(ts), "O")]
+            begins = [(idx, t[2:]) for idx, t in enumerate(ts) if t[0] in begin_tags + "O"]
+            if (len(begins) < len(ts)):
+                begins.append((len(ts), "O"))
             begins = [b for idx, b in enumerate(begins) if idx == 0 or ts[idx] != "O" or ts[idx - 1] != "O"]
             if begins[0][0] != 0:
                 print('warning: tags does begin with any of {}: \n{}\n{}'.format(begin_tags, sentence, ts))
