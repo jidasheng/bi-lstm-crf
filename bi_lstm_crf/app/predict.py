@@ -52,13 +52,16 @@ class WordsTagger:
             return []
 
         def _tokens(sentence, ts):
-            begins = [(idx, t[2:]) for idx, t in enumerate(ts) if t[0] in begin_tags + "O"] + [(len(ts), "O")]
-            begins = [b for idx, b in enumerate(begins) if idx == 0 or ts[idx] != "O" or ts[idx - 1] != "O"]
-            if begins[0][0] != 0:
-                print('warning: tags does begin with any of {}: \n{}\n{}'.format(begin_tags, sentence, ts))
-                begins.insert(0, (0, 0))
+            # begins: [(idx, label), ...]
+            all_begin_tags = begin_tags + "O"
+            begins = [(idx, t[2:]) for idx, t in enumerate(ts) if t[0] in all_begin_tags]
+            begins = [
+                         (idx, label)
+                         for idx, label in begins
+                         if ts[idx] != "O" or (idx > 0 and ts[idx - 1] != "O")
+                     ] + [(len(ts), "")]
 
-            tokens_ = [(sentence[s:e], tag) for (s, tag), (e, _) in zip(begins[:-1], begins[1:])]
+            tokens_ = [(sentence[s:e], label) for (s, label), (e, _) in zip(begins[:-1], begins[1:]) if label]
             return [((t, tag) if tag else t) for t, tag in tokens_]
 
         tokens_list = [_tokens(sentence, ts) for sentence, ts in zip(sentences, tags_list)]
