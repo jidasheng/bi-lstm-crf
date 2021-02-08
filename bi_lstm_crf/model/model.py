@@ -4,7 +4,7 @@ from .crf import CRF
 
 
 class BiRnnCrf(nn.Module):
-    def __init__(self, vocab_size, tagset_size, embedding_dim, hidden_dim, num_rnn_layers=1, rnn="lstm"):
+    def __init__(self, vocab_size, tagset_size, embedding_dim, hidden_dim, dropout=0.0, num_rnn_layers=1, rnn="lstm"):
         super(BiRnnCrf, self).__init__()
         self.embedding_dim = embedding_dim
         self.hidden_dim = hidden_dim
@@ -12,14 +12,16 @@ class BiRnnCrf(nn.Module):
         self.tagset_size = tagset_size
 
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.dropout = nn.Dropout(dropout)
         RNN = nn.LSTM if rnn == "lstm" else nn.GRU
         self.rnn = RNN(embedding_dim, hidden_dim // 2, num_layers=num_rnn_layers,
+                       dropout=dropout,
                        bidirectional=True, batch_first=True)
         self.crf = CRF(hidden_dim, self.tagset_size)
 
     def __build_features(self, sentences):
         masks = sentences.gt(0)
-        embeds = self.embedding(sentences.long())
+        embeds = self.dropout(self.embedding(sentences.long()))
 
         seq_length = masks.sum(1)
         sorted_seq_length, perm_idx = seq_length.sort(descending=True)
@@ -29,7 +31,7 @@ class BiRnnCrf(nn.Module):
         packed_output, _ = self.rnn(pack_sequence)
         lstm_out, _ = pad_packed_sequence(packed_output, batch_first=True)
         _, unperm_idx = perm_idx.sort()
-        lstm_out = lstm_out[unperm_idx, :]
+        lstm_out = self.dropout(lstm_out[unperm_idx, :])
 
         return lstm_out, masks
 
