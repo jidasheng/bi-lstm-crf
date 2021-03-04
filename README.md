@@ -83,6 +83,10 @@ class BertCrf(nn.Module):
         return scores, tag_seq
 ```
 
+# Recommendation
+- [Neural Network](https://github.com/jerryjee120/Neural-Network): A very cool App for Deep Learning & PyTorch
+
+
 # References
 1. [Zhiheng Huang, Wei Xu, and Kai Yu. 2015. Bidirectional LSTM-CRF Models for Sequence Tagging][6]. arXiv:1508.01991.
 2. PyTorch tutorial [ADVANCED: MAKING DYNAMIC DECISIONS AND THE BI-LSTM CRF][1]
