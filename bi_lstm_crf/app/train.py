@@ -99,6 +99,7 @@ def main():
     parser.add_argument('--num_epoch', type=int, default=20, help="number of epoch to train")
     parser.add_argument('--lr', type=float, default=1e-3, help='learning rate')
     parser.add_argument('--weight_decay', type=float, default=0., help='the L2 normalization parameter')
+    parser.add_argument('--dropout', type=float, default=0., help='dropout rate for embedding, LSTM, and CRF')
     parser.add_argument('--batch_size', type=int, default=1000, help='batch size for training')
     parser.add_argument('--device', type=str, default=None,
                         help='the training device: "cuda:0", "cpu:0". It will be auto-detected by default')
