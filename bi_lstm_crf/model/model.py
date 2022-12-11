@@ -25,7 +25,7 @@ class BiRnnCrf(nn.Module):
         sorted_seq_length, perm_idx = seq_length.sort(descending=True)
         embeds = embeds[perm_idx, :]
 
-        pack_sequence = pack_padded_sequence(embeds, lengths=sorted_seq_length, batch_first=True)
+        pack_sequence = pack_padded_sequence(embeds, lengths=sorted_seq_length.cpu(), batch_first=True)
         packed_output, _ = self.rnn(pack_sequence)
         lstm_out, _ = pad_packed_sequence(packed_output, batch_first=True)
         _, unperm_idx = perm_idx.sort()

@@ -15,7 +15,7 @@ def __eval_model(model, device, dataloader, desc):
         losses, nums = zip(*[
             (model.loss(xb.to(device), yb.to(device)), len(xb))
             for xb, yb in tqdm(dataloader, desc=desc)])
-        return np.sum(np.multiply(losses, nums)) / np.sum(nums)
+        return torch.sum(torch.multiply(torch.tensor(losses), torch.tensor(nums))) / np.sum(nums)
 
 
 def __save_loss(losses, file_path):
