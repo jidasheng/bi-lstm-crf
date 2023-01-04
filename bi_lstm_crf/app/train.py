@@ -90,7 +90,7 @@ def train(args):
     print("training completed. test loss: {:.2f}".format(test_loss))
 
 
-def main():
+def main(argv=None):
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('corpus_dir', type=str, help="the corpus directory")
@@ -114,7 +114,10 @@ def main():
     parser.add_argument('--num_rnn_layers', type=int, default=1, help='the number of RNN layers')
     parser.add_argument('--rnn_type', type=str, default="lstm", help='RNN type, choice: "lstm", "gru"')
 
-    args = parser.parse_args()
+    if argv is None:
+        args = parser.parse_args()
+    else:
+        args = parser.parse_args(argv)
 
     train(args)
 
