@@ -76,6 +76,8 @@ def main():
                         help='the training device: "cuda:0", "cpu:0". It will be auto-detected by default')
 
     args = parser.parse_args()
+    if args.sentence[0] == "[":
+        args.sentence = json.loads(args.sentence)
 
     results = WordsTagger(args.model_dir, args.device)([args.sentence])
     print(args.sentence)
