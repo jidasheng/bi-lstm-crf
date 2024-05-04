@@ -1,5 +1,7 @@
 A PyTorch implementation of the BI-LSTM-CRF model.
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P6XKY6B)
+
 # Features:
 - Compared with [PyTorch BI-LSTM-CRF tutorial][1], following improvements are performed:
     - Full support for mini-batch computation
