@@ -16,7 +16,7 @@ def model_filepath(model_dir):
 
 def build_model(args, processor, load=True, verbose=False):
     model = BiRnnCrf(len(processor.vocab), len(processor.tags),
-                     embedding_dim=args.embedding_dim, hidden_dim=args.hidden_dim, num_rnn_layers=args.num_rnn_layers)
+                     embedding_dim=args.embedding_dim, hidden_dim=args.hidden_dim, dropout=args.dropout, num_rnn_layers=args.num_rnn_layers)
 
     # weights
     model_path = model_filepath(args.model_dir)
